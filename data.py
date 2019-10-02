@@ -41,8 +41,10 @@ for key in keys[:-1]:
 
 """
 We then need to separate the list of keys into questions, and answers.
-So we take each item in key_ids, and iterate over our master list (keys). We subtract 1, because we start with key in key_ids (line 50).
-On each iteration over the list, we create two lists. the first, is a question, the second, is an answer. Answer always follows question, so i + 1.
+So we take each item in key_ids, and iterate over our master list (keys). 
+We subtract 1, because we start with key in key_ids (line 50).
+On each iteration over the list, we create two lists. the first, is a question, the second, is an answer. 
+Answer always follows question, so i + 1.
 """
 
 questions = []
@@ -57,7 +59,7 @@ We now have two lists. questions[x] aligns with answers[x].
 The next step is to clean the data, removing apostrophes, changing words and making everything lowercase.
 """
 
-
+# Heck of a function, but all it does is re.sub() all of the text to make it more simple for the bot to learn from.
 def clean(text):
     text = text.lower()
     text = re.sub(r"i'm", "i am", text)
@@ -78,9 +80,10 @@ def clean(text):
     text = re.sub(r"\'d", " would", text)
     text = re.sub(r"won't", "will not", text)
     text = re.sub(r"can't", "cannot", text)
-    text = re.sub(r"  ", " ", text)
     text = re.sub(r"[-()\"@#/:;<>{}+=~|.?,]", "", text)
+    text = re.sub(r"  ", " ", text)
     return text
+
 
 # Clean the questions
 clean_questions = []
@@ -94,12 +97,13 @@ for answer in answers:
 
 """
 Next, we will remove the non-important words
-Note: I will come back and play with this. May be worth it to not do this.
-We do this to optimize training, but what if I had forever to train?
+Note: I will come back and play with this. May be worth it in the long run to not do this.
+We do this to optimize training, but what if I had forever to train? Or a super powerful PC? 
+Would it make the bot smarter?
 
 Regardless, we will choose a dictionary to do this, called word_count.
 
-For each question in our now cleaned list, we slit each word into a list. If that word appears in word_count, 
+For each question in our now cleaned list, we split each word into a list. If that word appears in word_count, 
 we add 1 to it. if not, we set it equal to 1.
 """
 word_count = {}
