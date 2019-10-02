@@ -97,11 +97,12 @@ Next, we will remove the non-important words
 Note: I will come back and play with this. May be worth it to not do this.
 We do this to optimize training, but what if I had forever to train?
 
-Regardless, we will choose a dictionary to do this.
+Regardless, we will choose a dictionary to do this, called word_count.
+
+For each question in our now cleaned list, we slit each word into a list. If that word appears in word_count, 
+we add 1 to it. if not, we set it equal to 1.
 """
-
 word_count = {}
-
 for question in clean_questions:
     for word in question.split(' '):
         if word not in word_count:
