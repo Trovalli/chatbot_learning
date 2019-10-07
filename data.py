@@ -1,6 +1,7 @@
 import numpy as np
 import re
 import time
+import tensorflow as tf
 
 """
 Important notes from Matt:
@@ -178,7 +179,7 @@ for answer in clean_answers:
             ints.append(answers_words_ints[word])
     answers_to_int.append(ints)
 
-# Sort the questions and answers by length of question to help the training
+# Sort the questions and answers by length of question. This will help with the training.
 sorted_clean_questions = []
 sorted_clean_answers = []
 
@@ -189,3 +190,37 @@ for length in range(1, 25 + 1):
             sorted_clean_answers.append(answers_to_int[i[0]])
 
 ### END DATA PRE PROCESSING ###
+
+
+### BUILDING THE SEQ2SEQ MODEL ###
+
+"""
+Must create Tensors, because in tensorflow all variables in Tensors must be defined by tensor placeholders.
+An even more advanced data structure that can contain tensors. 
+
+We compare the chatbot answers to the real answers – this is how we train it.
+
+Learning Rate (lr) = hyperparameter
+*** Look into keep_prob ***
+
+"""
+
+# Creating placeholders for the inputs and the targets
+def model_input():
+    inputs = tf.placeholder(tf.int32, [None, None], name = 'input')
+    targets = tf.placeholder(tf.int32, [None, None], name='targets')
+    lr = tf.placeholder(tf.float32, name='learning_rate')
+    keep_prob = tf.placeholder(tf.float32, name='keep_prob')
+    return inputs, targets, lr, keep_prob
+
+# Preprocessing the target
+def preprocess_targets(targets, word2int, batch_size):
+    left_side = tf.fill([batch_size, 1], word2int['<SOS>'])
+    right_side = tf.strided_slice(targets, [0,0], [batch_size, -1], [1,1])
+    preprocessed_targets = tf.concat([left_side, right_side], 1)
+    return preprocessed_targets
+
+
+# Creating the Encoder RNN Layer
+
+
